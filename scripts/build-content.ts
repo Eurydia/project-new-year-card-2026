@@ -90,20 +90,24 @@ function main() {
       join(CONTENT_SRC_DIR, entry.path),
     )
     const pw = (matter as { password: string }).password
-    const { ctB64, ivB64 } = Encryptor.encrypt(pw, content)
-    data[entry.path] = {
-      iv: ivB64,
-      pw,
-    }
+    let ct: string | undefined
+    let iv: string | undefined
+    do {
+      const { ctB64, ivB64 } = Encryptor.encrypt(pw, content)
+      data[entry.path] = {
+        iv: ivB64,
+        pw,
+      }
+      if (!ivB64.includes('/')) {
+        ct = ctB64
+        iv = ivB64
+      }
+    } while (iv === undefined || ct === undefined)
 
-    writeFileSync(
-      join(CONTENT_DEST_DIR, `${encodeURIComponent(ivB64)}.enc`),
-      ctB64,
-      {
-        flush: true,
-        flag: 'w+',
-      },
-    )
+    writeFileSync(join(CONTENT_DEST_DIR, `${encodeURIComponent(iv)}.enc`), ct, {
+      flush: true,
+      flag: 'w+',
+    })
   }
 
   writeFileSync(

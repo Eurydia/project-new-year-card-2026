@@ -8,7 +8,6 @@ export class EncryptorWeb {
   private static dec = new TextDecoder()
 
   private static b64ToBytes(b64: string) {
-    console.debug(b64)
     const bin = atob(b64)
     const out = new Uint8Array(bin.length)
     for (let i = 0; i < bin.length; i++) {
