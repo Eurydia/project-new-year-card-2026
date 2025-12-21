@@ -21,7 +21,7 @@ interface MyRouterContext {
 
 const globalStyles = (
   <GlobalStyles
-    styles={({ palette, alpha }) => ({
+    styles={({ palette, alpha, spacing }) => ({
       '#app': {
         height: '100%',
         backgroundImage: `
@@ -30,6 +30,18 @@ const globalStyles = (
         `,
         backgroundSize: '64px 64px',
         overflow: 'auto',
+      },
+      h1: { fontFamily: "'IBM Plex Mono'", fontWeight: 700 },
+      blockquote: {
+        borderLeftWidth: spacing(1),
+        borderLeftStyle: 'solid',
+        borderLeftColor: palette.divider,
+        marginLeft: 0,
+        marginRight: 0,
+        marginTop: spacing(8),
+        marginBottom: spacing(8),
+        paddingLeft: spacing(4),
+        paddingRight: spacing(4),
       },
     })}
   />
@@ -40,9 +52,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     <>
       <HeadContent />
       <ThemeProvider theme={MAIN_THEME}>
-        <CssBaseline />
         {globalStyles}
-        <Container maxWidth="md" sx={{ paddingBottom: 4 }}>
+        <CssBaseline />
+        <Container maxWidth="md" sx={{ paddingY: 4 }}>
           <Outlet />
         </Container>
       </ThemeProvider>

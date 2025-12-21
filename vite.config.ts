@@ -25,12 +25,12 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  build: {
-    target: 'esnext',
-    sourcemap: 'hidden',
-    minify: 'terser',
-    terserOptions: { compress: { drop_console: true } },
-    assetsInlineLimit: 0,
-    license: true,
-  },
+  // build: {
+  //   target: 'esnext',
+  //   sourcemap: 'hidden',
+  //   minify: 'terser',
+  //   terserOptions: { compress: { drop_console: true } },
+  //   assetsInlineLimit: 0,
+  //   license: true,
+  // },
 })
