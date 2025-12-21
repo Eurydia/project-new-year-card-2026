@@ -4,7 +4,6 @@ import viteReact from '@vitejs/plugin-react'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { fileURLToPath, URL } from 'node:url'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     devtools(),
@@ -22,5 +21,13 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+  },
+  build: {
+    target: 'esnext',
+    sourcemap: 'hidden',
+    minify: 'terser',
+    terserOptions: { compress: { drop_console: true } },
+    assetsInlineLimit: 0,
+    license: true,
   },
 })
