@@ -17,7 +17,7 @@ export const Route = createFileRoute('/unlock')({
   }),
   onError: () => {
     toast.error('Uh oh. ')
-    throw redirect({ to: '/' })
+    throw redirect({ to: '/', replace: true })
   },
 })
 
