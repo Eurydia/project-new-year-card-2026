@@ -7,23 +7,37 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import type { QueryClient } from '@tanstack/react-query'
 import TanStackQueryDevtools from '@/integrations/tanstack-query/devtools'
-import { Container, CssBaseline, ThemeProvider } from '@mui/material'
-import { MUI_THEME } from '@/theme'
+import { Container, CssBaseline, GlobalStyles } from '@mui/material'
 
 interface MyRouterContext {
   queryClient: QueryClient
 }
 
+const globalStyles = (
+  <GlobalStyles
+    styles={({ palette, alpha }) => ({
+      '#app': {
+        height: '100%',
+        backgroundImage: `
+          linear-gradient(to right, ${alpha(palette.divider, 0.07)} 1px, transparent 1px),
+          linear-gradient(to bottom, ${alpha(palette.divider, 0.07)} 1px, transparent 1px)
+        `,
+        backgroundSize: '64px 64px',
+        overflow: 'auto',
+      },
+    })}
+  />
+)
+
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
       <HeadContent />
-      <ThemeProvider theme={MUI_THEME}>
-        <CssBaseline />
-        <Container maxWidth="md" sx={{ paddingY: 4 }}>
-          <Outlet />
-        </Container>
-      </ThemeProvider>
+      <CssBaseline />
+      {globalStyles}
+      <Container maxWidth="md" sx={{ paddingY: 4 }}>
+        <Outlet />
+      </Container>
       <TanStackDevtools
         config={{
           position: 'bottom-right',

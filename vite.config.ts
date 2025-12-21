@@ -5,6 +5,7 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
+  base: '/project-new-year-card-2026',
   plugins: [
     devtools(),
     tanstackRouter({
