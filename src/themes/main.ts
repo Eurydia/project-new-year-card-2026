@@ -1,5 +1,8 @@
-import '@fontsource/fira-code/500.css'
-import '@fontsource/fira-code/700.css'
+import '@fontsource/fira-code/300'
+import '@fontsource/fira-code/400'
+import '@fontsource/fira-code/500'
+import '@fontsource/fira-code/600'
+import '@fontsource/fira-code/700'
 import '@fontsource/ibm-plex-mono/700'
 import { createTheme } from '@mui/material'
 export const MAIN_THEME = createTheme({

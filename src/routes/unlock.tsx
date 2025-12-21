@@ -9,7 +9,13 @@ export const Route = createFileRoute('/unlock')({
   validateSearch: CredentialDataSchema,
   loaderDeps: ({ search }) => ({ search }),
   loader: async ({ deps: { search } }) => {
-    const content = await getCard(search.iv, decodeURIComponent(search.pw))
+    const content = await getCard(
+      search.iv,
+      decodeURIComponent(search.pw),
+    ).catch((e) => {
+      console.debug(e)
+      throw redirect({ to: '/', replace: true })
+    })
     return { content }
   },
   head: ({ loaderData }) => ({
