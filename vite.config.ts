@@ -1,11 +1,12 @@
-import { defineConfig } from 'vite'
 import { devtools } from '@tanstack/devtools-vite'
-import viteReact from '@vitejs/plugin-react'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
+import viteReact from '@vitejs/plugin-react'
 import { fileURLToPath, URL } from 'node:url'
+import { defineConfig } from 'vite'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
-  base: '/project-new-year-card-2026',
+  base: '/project-new-year-card-2026/',
   plugins: [
     devtools(),
     tanstackRouter({
@@ -17,6 +18,7 @@ export default defineConfig({
         plugins: ['babel-plugin-react-compiler'],
       },
     }),
+    nodePolyfills(),
   ],
   resolve: {
     alias: {

@@ -1,25 +1,16 @@
+import {
+  createCipheriv,
+  createDecipheriv,
+  pbkdf2Sync,
+  randomBytes,
+} from 'crypto'
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
 import { globbySync } from 'globby'
 import { join } from 'path'
 import { VFile } from 'vfile'
 import { matter } from 'vfile-matter'
-import { randomBytes, pbkdf2Sync, createCipheriv } from 'crypto'
 
-declare module 'vfile' {
-  interface DataMap {
-    matter: {
-      password: string
-    }
-  }
-}
 class MdProcessor {
-  // private static readonly processor = unified()
-  //   .use(remarkParse)
-  //   .use(remarkGfm)
-  //   .use(remarkFrontmatter, ['toml', 'yaml'])
-  //   .use(remarkRehype)
-  //   .use(rehypeSanitize)
-  //   .use(rehypeStringify)
   static mdToHtmlFragment(path: string) {
     const file = new VFile(readFileSync(path))
     matter(file)
@@ -46,6 +37,17 @@ class Encryptor {
       Encryptor.DIGEST,
     )
   }
+
+  static decrypt(password: string, ivB64: string, ctB64: string): string {
+    const iv = Buffer.from(ivB64, 'base64')
+    const ct = Buffer.from(ctB64, 'base64')
+
+    const key = Encryptor.deriveKey(password, iv)
+
+    const decipher = createDecipheriv(Encryptor.ALG, key, iv)
+    const pt = Buffer.concat([decipher.update(ct), decipher.final()])
+    return pt.toString('utf8')
+  }
   static encrypt(password: string, plaintextUtf8: string) {
     const iv = randomBytes(Encryptor.IV_LEN)
     const key = Encryptor.deriveKey(password, iv)
@@ -60,24 +62,6 @@ class Encryptor {
       ivB64: iv.toString('base64'),
       ctB64: ct.toString('base64'),
     }
-    // decryptFromBase64(password: string, blobB64: string): string {
-    //   const blob = Buffer.from(blobB64, 'base64')
-    //   if (blob.length <= IV_LEN) throw new Error('Invalid blob')
-
-    //   const iv = blob.subarray(0, IV_LEN)
-    //   const ciphertext = blob.subarray(IV_LEN)
-
-    //   const key = deriveKeyFromPasswordAndIV(password, iv)
-
-    //   const decipher = createDecipheriv(ALG, key, iv)
-    //   // If password is wrong or data is corrupted, this may throw (bad padding) or output garbage.
-    //   const plaintext = Buffer.concat([
-    //     decipher.update(ciphertext),
-    //     decipher.final(),
-    //   ])
-
-    //   return plaintext.toString('utf8')
-    // }
   }
 }
 const ROOT_DIR = process.cwd()
@@ -105,12 +89,13 @@ function main() {
     const { content, matter } = MdProcessor.mdToHtmlFragment(
       join(CONTENT_SRC_DIR, entry.path),
     )
-    const pw = matter?.password as string
+    const pw = (matter as { password: string }).password
     const { ctB64, ivB64 } = Encryptor.encrypt(pw, content)
     data[entry.path] = {
       iv: ivB64,
       pw,
     }
+
     writeFileSync(
       join(CONTENT_DEST_DIR, `${encodeURIComponent(ivB64)}.enc`),
       ctB64,
@@ -122,7 +107,7 @@ function main() {
   }
 
   writeFileSync(
-    join(CONTENT_DEST_DIR, 'content.json'),
+    join(CONTENT_SRC_DIR, 'content.json'),
     JSON.stringify(data, undefined, 4),
   )
 }

@@ -6,3 +6,9 @@ export const CredentialDataSchema = z.object({
 })
 
 export type CredentialData = z.output<typeof CredentialDataSchema>
+
+export const FrontmatterSchema = z.object({
+  thumbnail: z.url(),
+  color: z.string().optional(),
+  title: z.string(),
+})
