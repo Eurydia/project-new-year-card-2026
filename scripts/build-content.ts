@@ -104,10 +104,10 @@ function main() {
       }
     } while (iv === undefined || ct === undefined)
 
-    writeFileSync(join(CONTENT_DEST_DIR, `${encodeURIComponent(iv)}.enc`), ct, {
-      flush: true,
-      flag: 'w+',
-    })
+    // writeFileSync(join(CONTENT_DEST_DIR, `${encodeURIComponent(iv)}.enc`), ct, {
+    //   flush: true,
+    //   flag: 'w+',
+    // })
   }
 
   writeFileSync(

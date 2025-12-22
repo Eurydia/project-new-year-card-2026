@@ -6,13 +6,21 @@ export const gridBg = (
       '#app': {
         height: '100%',
         backgroundImage: `
-          linear-gradient(to right, ${alpha(lighten(palette.divider, 0.7), 0.87)} 1px, transparent 1px),
-          linear-gradient(to bottom, ${alpha(lighten(palette.divider, 0.7), 0.87)} 1px, transparent 1px)
+          linear-gradient(to right, ${alpha(lighten(palette.divider, 0.8), 0.4)} 5px, transparent 5px),
+          linear-gradient(to bottom, ${alpha(lighten(palette.divider, 0.8), 0.4)} 5px, transparent 5px)
         `,
-        backgroundSize: '64px 64px',
+        backgroundSize: '96px 96px',
         overflow: 'auto',
       },
-      h1: { fontFamily: "'IBM Plex Mono'", fontWeight: 700 },
+      h1: {
+        fontFamily: "'IBM Plex Mono'",
+        fontWeight: 700,
+      },
+      'h1 > strong': {
+        textDecorationLine: 'underline',
+        textDecorationStyle: 'double',
+        textDecorationColor: palette.divider,
+      },
       blockquote: {
         borderLeftWidth: spacing(1),
         borderLeftStyle: 'solid',
