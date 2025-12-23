@@ -9,4 +9,4 @@ count.txt
 .tanstack
 .wrangler
 
-public/content/**
+*.enc

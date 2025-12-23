@@ -1,3 +1,4 @@
+import { fetchAndDecryptCard } from '@/api/card'
 import { gridBg } from '@/components/decor/grid-bg'
 import { parseMd } from '@/services/md-processor'
 import { themeWithDivider } from '@/themes/dynamic'
@@ -11,13 +12,10 @@ export const Route = createFileRoute('/unlock')({
   validateSearch: CredentialDataSchema,
   loaderDeps: ({ search }) => ({ search }),
   loader: async ({ deps: { search } }) => {
-    // const content = await fetchAndDecryptCard(
-    //   search.iv,
-    //   decodeURIComponent(search.pw),
-    // )
-    const raw = await fetch(
-      `${import.meta.env.BASE_URL}content/${search.iv}.md`,
-    ).then((r) => r.text())
+    const raw = await fetchAndDecryptCard(
+      search.iv,
+      decodeURIComponent(search.pw),
+    )
     return {
       content: parseMd(raw),
     }
